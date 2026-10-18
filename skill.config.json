@@ -1,0 +1,87 @@
+{
+  "$schema": "https://aistudio.google.com/schemas/agent-skill-v1.json",
+  "skillId": "finance-transaction-analyzer",
+  "name": "FinPulse Financial Transaction Analyzer & ML Classifier",
+  "version": "1.4.0",
+  "language": "ru-RU",
+  "runtime": {
+    "node": ">=22.0.0",
+    "typescript": "^7.0.2",
+    "framework": "React 19 + Express 4 + Vite 8",
+    "port": 3000
+  },
+  "mlEngine": {
+    "primaryClassifier": "multinomial-naive-bayes-tfidf",
+    "hybridServerModel": "gemini-3.8-flash",
+    "features": [
+      "russian-morphological-stemming",
+      "tfidf-token-weighting",
+      "mcc-code-bayesian-priors",
+      "laplace-smoothing",
+      "online-active-retraining"
+    ],
+    "temperatureScaling": 1.65,
+    "minConfidenceThreshold": 0.42
+  },
+  "budgetEngine": {
+    "defaultWarningRatio": 0.8,
+    "criticalExceededRatio": 1.0,
+    "currency": "RUB",
+    "supportedCategories": [
+      "groceries",
+      "restaurants",
+      "transport",
+      "housing",
+      "health",
+      "entertainment",
+      "shopping",
+      "travel",
+      "transfers",
+      "income"
+    ]
+  },
+  "bankApiIntegrations": {
+    "securityProtocols": [
+      "OAuth 2.1 + PKCE",
+      "mTLS (TLS 1.3 / AES-256-GCM)",
+      "OpenAPI FAPI 2.0 + JWS",
+      "ISO 20022 JSON Normalization"
+    ],
+    "providers": [
+      {
+        "id": "tbank-open-api",
+        "name": "Т-Банк (Open Banking API)",
+        "endpoint": "/api/bank/sync/tbank-open-api"
+      },
+      {
+        "id": "sber-fin-api",
+        "name": "Сбер ID / Финансовый API",
+        "endpoint": "/api/bank/sync/sber-fin-api"
+      },
+      {
+        "id": "alfa-open-banking",
+        "name": "Альфа-Банк Open API",
+        "endpoint": "/api/bank/sync/alfa-open-banking"
+      },
+      {
+        "id": "raif-direct-api",
+        "name": "Райффайзен Банк API",
+        "endpoint": "/api/bank/sync/raif-direct-api"
+      }
+    ]
+  },
+  "offlineSync": {
+    "storageDriver": "localStorage + IndexedQueue",
+    "deduplicationHash": "FNV-1a-32bit-checksum",
+    "conflictResolution": "client-timestamp-with-checksum-idempotency",
+    "autoFlushOnReconnect": true
+  },
+  "dependenciesVerified": {
+    "@google/genai": "^2.4.0",
+    "express": "^4.21.2",
+    "react": "^19.0.1",
+    "react-dom": "^19.0.1",
+    "lucide-react": "^0.546.0",
+    "tailwindcss": "^4.3.3"
+  }
+}
